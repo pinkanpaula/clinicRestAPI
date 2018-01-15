@@ -119,7 +119,8 @@ app.get('/queueinfo', function(req,res) {
 
 
 // Launch the server on the port 3000
-const server = app.listen(8080, () => {
+// Changed to 8080 to be deployed on google cloud platform
+const server = app.listen(8080, () => {  
   const { address, port } = server.address();
   console.log(`Listening at http://${address}:${port}`);
 });
