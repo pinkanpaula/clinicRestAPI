@@ -84,7 +84,7 @@ function checkEmptyVal(data) {
             if (y==="null" || y===null || y==="" || typeof y === "undefined") 
                 delete data[x]            
         }
-        
+
     }
 }
 
@@ -119,7 +119,7 @@ app.get('/queueinfo', function(req,res) {
 
 
 // Launch the server on the port 3000
-const server = app.listen(3000, () => {
+const server = app.listen(8080, () => {
   const { address, port } = server.address();
   console.log(`Listening at http://${address}:${port}`);
 });
