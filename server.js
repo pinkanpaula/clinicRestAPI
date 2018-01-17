@@ -4,7 +4,6 @@ import FacebookStrategy from 'passport-facebook';
 import { facebook } from './config';
 import * as admin from 'firebase-admin';
 
-const PORT = process.env.PORT || 5000;
 
 
 // Transform Facebook profile because Facebook and Google profile objects look different
@@ -123,7 +122,7 @@ app.get('/queueinfo', function(req,res) {
 
 // Launch the server on the port 3000
 // Changed to 8080 to be deployed on google cloud platform
-const server = app.listen(PORT, () => {  
+const server = app.listen(process.env.PORT || 5000, () => {  
   const { address, port } = server.address();
   console.log(`Listening at http://${address}:${port}`);
 });
