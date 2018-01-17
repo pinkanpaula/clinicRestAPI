@@ -4,7 +4,7 @@ import FacebookStrategy from 'passport-facebook';
 import { facebook } from './config';
 import * as admin from 'firebase-admin';
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 5000;
 
 
 // Transform Facebook profile because Facebook and Google profile objects look different
