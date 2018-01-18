@@ -135,7 +135,7 @@ app.get('/queueinfo', function(req,res) {
 var server = app.listen(process.env.PORT || 8080, function () {
   var _serverAddress = server.address(),
       address = _serverAddress.address,
-      port = _server$address.port;
+      port = _serverAddress.port;
 
   console.log("Listening at http://" + address + ":" + port);
 });
