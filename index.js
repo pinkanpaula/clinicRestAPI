@@ -1,17 +1,18 @@
-import express from 'express';
-import passport from 'passport';
-import FacebookStrategy from 'passport-facebook';
-import { facebook } from './config';
-import * as admin from 'firebase-admin';
-
+var express = require('express')
+var passport = require('passport');
+var FacebookStrategy = require('passport-facebook');
+var facebook = require('./config');
+var admin = require("firebase-admin");
 
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
-const transformFacebookProfile = (profile) => ({
-  name: profile.name,
-  avatar: profile.picture.data.url,
-});
+var transformFacebookProfile = function transformFacebookProfile(profile) {
+  return {
+    name: profile.name,
+    avatar: profile.picture.data.url
+  };
+};
 
 // variables to store data requested by clients
 // assuming clinic hours are fixed and not real time data
@@ -45,21 +46,43 @@ cqref.once("value", function(snapshot) {
 
 
 // Register Facebook Passport strategy
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 passport.use(new FacebookStrategy(facebook,
-  // Gets called when user authorizes access to their profile
-  async (accessToken, refreshToken, profile, done)
-    // Return done callback and pass transformed user object
-    => done(null, transformFacebookProfile(profile._json))
-));
+// Gets called when user authorizes access to their profile
+function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(accessToken, refreshToken, profile, done) {
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            return _context.abrupt("return",
+            // Return done callback and pass transformed user object
+            done(null, transformFacebookProfile(profile._json)));
+
+          case 1:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, undefined);
+  }));
+
+  return function (_x, _x2, _x3, _x4) {
+    return _ref.apply(this, arguments);
+  };
+}()));
 
 
 
 // Serialize user into the sessions
-passport.serializeUser((user, done) => done(null, user));
-
+passport.serializeUser(function (user, done) {
+  return done(null, user);
+});
 // Deserialize user from the sessions
-passport.deserializeUser((user, done) => done(null, user));
-
+passport.deserializeUser(function (user, done) {
+  return done(null, user);
+});
 // Initialize http server
 const app = express();
 
@@ -70,11 +93,12 @@ app.use(passport.session());
 // Set up Facebook auth routes
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
-  // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
-  (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
 
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
+// Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
+function (req, res) {
+  return res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user));
+});
 
 
 
@@ -122,7 +146,10 @@ app.get('/queueinfo', function(req,res) {
 
 // Launch the server on the port 3000
 // Changed to 8080 to be deployed on google cloud platform
-const server = app.listen(process.env.PORT || 5000, () => {  
-  const { address, port } = server.address();
-  console.log(`Listening at http://${address}:${port}`);
+var server = app.listen(process.env.PORT || 8080, function () {
+  var _serverAddress = server.address(),
+      address = _serverAddress.address,
+      port = _server$address.port;
+
+  console.log("Listening at http://" + address + ":" + port);
 });
