@@ -72,9 +72,12 @@ passport.deserializeUser(function (user, done) {
 // Initialize http server
 const app = express();
 
+
+
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 // Set up Facebook auth routes
 app.get('/auth/facebook', passport.authenticate('facebook'));
@@ -100,6 +103,11 @@ function checkEmptyVal(data) {
     }
 }
 
+app.set('view engine', 'ejs');
+
+app.get('/', function(req, res) {
+    res.render('pages/index');
+});
 
 // Clinic info services
 app.get('/hoursinfo', function(req,res) {
