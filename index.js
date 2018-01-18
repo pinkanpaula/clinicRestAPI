@@ -1,13 +1,13 @@
 var express = require('express')
 var passport = require('passport');
 var FacebookStrategy = require('passport-facebook');
-var facebook = require('./config');
+var config = require('./config-gcp');
 var admin = require("firebase-admin");
 
 
 // Transform Facebook profile because Facebook and Google profile objects look different
 // and we want to transform them into user objects that have the same set of attributes
-var transformFacebookProfile = function transformFacebookProfile(profile) {
+var transformFacebookProfile = function (profile) {
   return {
     name: profile.name,
     avatar: profile.picture.data.url
@@ -46,32 +46,18 @@ cqref.once("value", function(snapshot) {
 
 
 // Register Facebook Passport strategy
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
-passport.use(new FacebookStrategy(facebook,
-// Gets called when user authorizes access to their profile
-function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(accessToken, refreshToken, profile, done) {
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            return _context.abrupt("return",
-            // Return done callback and pass transformed user object
-            done(null, transformFacebookProfile(profile._json)));
-
-          case 1:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee, undefined);
-  }));
-
-  return function (_x, _x2, _x3, _x4) {
-    return _ref.apply(this, arguments);
-  };
-}()));
+passport.use(new FacebookStrategy({
+    clientID: config.clientID,
+    clientSecret:config.clientID ,
+    callbackURL: config.callbackURL
+  },
+  function(accessToken, refreshToken, profile, done) {
+    process.nextTick(function () {
+      return done(null, transformFacebookProfile(profile._json));
+    });
+  }
+));
 
 
 
