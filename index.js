@@ -109,6 +109,10 @@ app.get('/', function(req, res) {
     res.render('pages/index');
 });
 
+app.get('/about', function(req, res) {
+  res.render('pages/about');
+});
+
 // Clinic info services
 app.get('/hoursinfo', function(req,res) {
   if(Object.keys(clinic_hours).length == 0) {
