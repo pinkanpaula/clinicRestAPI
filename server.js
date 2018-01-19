@@ -70,10 +70,10 @@ app.use(passport.session());
 // Set up Facebook auth routes
 app.get('/auth/facebook', passport.authenticate('facebook'));
 
-app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
-  // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
-  (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
+  app.get('/auth/facebook/callback',
+    passport.authenticate('facebook', { failureRedirect: '/auth/facebook' }),
+    // Redirect user back to the mobile app using Linking with a custom protocol OAuthLogin
+    (req, res) => res.redirect('OAuthLogin://login?user=' + JSON.stringify(req.user)));
 
 
 
@@ -122,7 +122,7 @@ app.get('/queueinfo', function(req,res) {
 
 // Launch the server on the port 3000
 // Changed to 8080 to be deployed on google cloud platform
-const server = app.listen(process.env.PORT || 5000, () => {  
+const server = app.listen(process.env.PORT || 3000, () => {  
   const { address, port } = server.address();
   console.log(`Listening at http://${address}:${port}`);
 });
